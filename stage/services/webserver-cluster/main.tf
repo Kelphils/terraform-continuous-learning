@@ -1,9 +1,20 @@
 terraform {
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
+  }
+  backend "s3" {
+    # Replace this with your bucket name!
+    bucket = "terraform-state-bucket-for-tutorial"
+    key    = "stage/services/webserver-cluster/terraform.tfstate"
+    region = "us-east-2"
+
+    # Replace this with your DynamoDB table name!
+    dynamodb_table = "terraform-learning-locks"
+    encrypt        = true
   }
 }
 
@@ -159,25 +170,14 @@ resource "aws_lb_listener_rule" "asg" {
   }
 }
 
-terraform {
-  backend "s3" {
-    # Replace this with your bucket name!
-    bucket = "terraform-state-bucket-tutorials"
-    key    = "stage/services/webserver-cluster/terraform.tfstate"
-    region = "us-east-2"
 
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "terraform-learning-locks"
-    encrypt        = true
-  }
-}
 
 # Read data created by the mysql database within the web-server folder as it will read from the state file of the database in the s3 bucket
 data "terraform_remote_state" "db" {
   backend = "s3"
 
   config = {
-    bucket = "terraform-state-bucket-tutorials"
+    bucket = "terraform-state-bucket-for-tutorial"
     key    = "stage/data-stores/mysql/terraform.tfstate"
     region = "us-east-2"
   }

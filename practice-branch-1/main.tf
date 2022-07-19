@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     # Replace this with your bucket name!
-    bucket = "terraform-state-bucket-tutorials"
+    bucket = "terraform-state-bucket-for-tutorial"
     key    = "workspaces-example/terraform.tfstate"
     region = "us-east-2"
 
