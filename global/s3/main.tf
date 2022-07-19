@@ -1,6 +1,4 @@
-provider "aws" {
-  region = "us-east-2"
-}
+
 # s3 bucket to store terraform state
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "terraform-state-bucket-for-tutorial"
@@ -52,16 +50,3 @@ resource "aws_dynamodb_table" "terraform_locks" {
   }
 }
 
-# backend configuration for the terraform state in S3 bucket with the DynamoDb table as the backend and encryption, locking enabled
-terraform {
-  backend "s3" {
-    # Replace this with your bucket name!
-    bucket = "terraform-state-bucket-for-tutorial"
-    key    = "global/s3/terraform.tfstate"
-    region = "us-east-2"
-
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "terraform-learning-locks"
-    encrypt        = true
-  }
-}
