@@ -7,15 +7,10 @@ terraform {
     }
   }
   #   backend configuration for the terraform state in S3 bucket with the DynamoDb table as the backend and encryption, locking enabled
+  #  Always remember to run terraform init command like this due to backend.hcl file include
+  # terraform init -backend-config=backend.hcl
   backend "s3" {
-    # Replace this with your bucket name!
-    bucket = "terraform-state-bucket-for-tutorial"
-    key    = "stage/data-stores/mysql/terraform.tfstate"
-    region = "us-east-2"
-
-    # Replace this with your DynamoDB table name!
-    dynamodb_table = "terraform-learning-locks"
-    encrypt        = true
+    key = "stage/data-stores/mysql/terraform.tfstate"
   }
 }
 
